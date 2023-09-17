@@ -1,28 +1,56 @@
-const ping = (_, message) => {
-    if (message.content == 'ping')
-        message.channel.send("pong");
-};
+const { Collection, Events } = require('discord.js');
+const fs = require('node:fs')
+const path = require('node:path');
 
 class App {
     client;
-    commands = [ping];
+    commands = new Collection();
+
+    messageListener = null;
 
     constructor(client) {
         this.client = client;
-        console.log(client);
-    }
 
-    addCommand(command) {
-        this.commands.push(command);
-    }
+        const foldersPath = path.join(__dirname, 'commands');
+        const commandFolders = fs.readdirSync(foldersPath);
 
-    registerCommands() {
-        this.client.on("message", (message) => {
-            this.commands.forEach((v) => v(this, message));
+        for (const folder of commandFolders) {
+            const commandsPath = path.join(foldersPath, folder);
+            const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+            for (const file of commandFiles) {
+                const filePath = path.join(commandsPath, file);
+                const command = require(filePath);
+                if ('data' in command && 'execute' in command) {
+                    this.addCommand(command);
+                } else {
+                    console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+                }
+            }
+        }
+
+        this.client.once(Events.ClientReady, () => {
+            console.log('Ready!');
         });
     }
 
+    addCommand(command) {
+        this.commands.set(command.data.name, command);
+    }
+
+    removeCommand(command) {
+        let idx = this.commands.indexOf(command);
+        if (idx != -1) this.commands.splice(idx, 1);
+    }
+
+    registerCommands() {
+        this.messageListener = async (message) => {
+            this.commands.forEach((cmd) => cmd.execute(this, message));
+        };
+        this.client.on(Events.MessageCreate, this.messageListener);
+    }
+
     unregisterCommands() {
+        this.client.off(Events.MessageCreate, this.messageListener);
     }
 }
 

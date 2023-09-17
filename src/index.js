@@ -1,25 +1,26 @@
-const discord = require('discord.js');
+const { GatewayIntentBits, Client } = require('discord.js');
 const opus = require('@discordjs/opus');
 const config = require('./config.js');
 const App = require('./app.js');
 
-GatewayIntentBits = discord.GatewayIntentBits;
-
-const client = new discord.Client({
+const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.DirectMessages,
         GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildVoiceStates
     ],
 });
 
 a = new App(client);
 
-a.registerCommands();
-
-if (config.token === undefined) {
-    console.log("No token ! Add token:abcdef in the json !");
+if (config['discord_token'] === null) {
+    console.log("No token ! Add 'discord_token': 'abcdef' in resources/config.json !");
     return;
 }
+
+a.registerCommands();
+
+client.login(config['discord_token']);
