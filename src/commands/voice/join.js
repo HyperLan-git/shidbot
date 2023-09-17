@@ -1,6 +1,6 @@
 const { joinVoiceChannel } = require('@discordjs/voice');
 module.exports = {
-    data: { name: "join" },
+    data: { name: "join", description: "Makes the bot join your current voice channel" },
     async execute(_, message) {
         if (message.content == '!join') {
             if (message.member.voice != null) {

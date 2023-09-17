@@ -1,5 +1,4 @@
 const { GatewayIntentBits, Client } = require('discord.js');
-const opus = require('@discordjs/opus');
 const config = require('./config.js');
 const App = require('./app.js');
 

@@ -54,4 +54,4 @@ class App {
     }
 }
 
-module.exports = App
+module.exports = App;

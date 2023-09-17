@@ -4,7 +4,7 @@ const { join } = require("node:path");
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 module.exports = {
-    data: { name: "play" },
+    data: { name: "play", description: "Makes the bot play a random sfx" },
     async execute(_, message) {
         if (message.content == '!play') {
             if (message.member.voice != null) {

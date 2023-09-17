@@ -8,7 +8,7 @@ const maxTime = 1000 * 60 * 60;
 const randElem = arr => arr.at(randomInt(arr.length));
 
 module.exports = {
-    data: { name: "randsfx" },
+    data: { name: "randsfx", description: "Makes the bot play random samples at random intervals for an hour" },
     async execute(_, message) {
         if (message.content == '!randsfx') {
             if (message.member.voice != null) {
@@ -27,7 +27,7 @@ module.exports = {
                 let w8 = 0;
                 while (w8 < maxTime) {
                     let res2 = createAudioResource(join(path, randElem(commandFolders)));
-                    let del = randomInt(100) * 100;
+                    let del = randomInt(100) * 300;
                     w8 += del;
                     await delay(del);
                     player.play(res2);
