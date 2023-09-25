@@ -130,3 +130,4 @@ dist
 .pnp.*
 
 resources/config.json
+resources/NECOS

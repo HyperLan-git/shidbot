@@ -6,7 +6,7 @@ module.exports = {
             app.commands.forEach((cmd) => {
                 msg += cmd.data.name + ": " + cmd.data.description + "\n";
             });
-            message.channel.send(msg);
+            await message.channel.send(msg);
         }
     }
 };

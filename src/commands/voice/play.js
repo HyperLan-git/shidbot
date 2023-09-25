@@ -1,10 +1,8 @@
 const { getVoiceConnection, createAudioResource, createAudioPlayer } = require('@discordjs/voice');
 const { join } = require("node:path");
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-
 module.exports = {
-    data: { name: "play", description: "Makes the bot play a random sfx" },
+    data: { name: "play", description: "Makes the bot play an sfx" },
     async execute(_, message) {
         if (message.content == '!play') {
             if (message.member.voice != null) {
