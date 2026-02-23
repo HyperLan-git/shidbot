@@ -1,4 +1,4 @@
-const { GatewayIntentBits, Client } = require('discord.js');
+const { GatewayIntentBits, Client, Partials } = require('discord.js');
 const config = require('./config.js');
 const App = require('./app.js');
 
@@ -11,6 +11,10 @@ const client = new Client({
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildVoiceStates
     ],
+    partials: [
+        Partials.Channel,
+        Partials.Message
+    ]
 });
 
 a = new App(client);
